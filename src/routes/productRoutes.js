@@ -1,5 +1,5 @@
 const express = require('express');
-const { allProducts, productById, productsByCategory } = require('../controllers/productController');
+const { allProducts, productById } = require('../controllers/productController');
 const productRouter = express.Router();
 
 // Routing for products
