@@ -1,8 +1,7 @@
 const { addNewUser, getUserInfo } = require("../services/userService");
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const config = require("../config/config");
-const JWT_SECRET_KEY = config.JWT_SECRET_KEY;
+const generateToken = require("../utils/jsonwebtoken");
+;
 
 // Add new user
 const addUser = async (req,res) => {
@@ -26,7 +25,7 @@ const getUser = async (req,res) => {
         if(!user) return res.status(400).send("User not found !");
         const customer = await bcrypt.compare(password,user.password);
         if(!customer) return res.status(400).send("Invalid password !");
-        const token = jwt.sign({username,password},JWT_SECRET_KEY,{expiresIn:'1h'});
+        const token = await generateToken(user.id);
         res.json({token});
     }catch(error){
         console.log('Error fetch user : ',error);

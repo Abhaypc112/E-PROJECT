@@ -19,7 +19,7 @@ const allProducts = async (req,res)=>{
 const productById = async (req,res)=>{
     try{
         const product = await getProductById(req.params.id);
-        if(!product.length) return res.status(400).send("Not found !");
+        if(!product) return res.status(400).send("Not found !");
         res.status(200).json({status:"Success",data:product});
     }catch(error){
         console.log('Error fetching products : ',error);

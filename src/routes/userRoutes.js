@@ -1,10 +1,9 @@
 const express = require('express');
 const { addUser, getUser } = require('../controllers/userController');
+const userRegVali = require('../validators/userValidator');
 const usersRouter = express.Router();
 
-usersRouter.route('/user/signup')
-    .post(addUser)
-usersRouter.route('/user/login')
-    .post(getUser)
+usersRouter.post('/user/signup',userRegVali,addUser);
+usersRouter.post('/user/login',getUser);
 
 module.exports = usersRouter;
