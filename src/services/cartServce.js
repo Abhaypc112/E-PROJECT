@@ -2,7 +2,7 @@ const Cart = require("../models/cartModel");
 const { getProductById } = require("./productService");
 
 // Cart product add and update service
-const updateCart = async (userId,productId,productQuantity) => {
+const updateCart = async (userId,productId,productQuantity) =>{
         const product = await getProductById(productId);
         if(!product) return res.status(400).send("Not found !");
         const userCart = await Cart.findOne({userId});
