@@ -15,8 +15,7 @@ const updateCart = async (userId,productId,productQuantity) => {
                 const totalProductPrice = product.price * productQuantity;
                 userCart.products.push({productId,quantity:productQuantity,totalProductPrice});
             }
-            const totalCartPrice = userCart.products.reduce((total,value) => total+value.totalProductPrice,0);
-            userCart.totalCartPrice = totalCartPrice;
+            userCart.totalCartPrice = userCart.products.reduce((total,value) => total+value.totalProductPrice,0);
             return await userCart.save();
         }else{
             const totalProductPrice = product.price * productQuantity;
@@ -47,8 +46,27 @@ const deleteCart = async (userId,productId) => {
     return await cart.save();
 }
 
+// Update cart count service
+const updateCount = async (userId,productId,adjust) => {
+    const cart = await Cart.findOne({userId});
+    if(!cart) return res.status(400).send("Cart Not fount !");
+    const product = await getProductById(productId);
+    if(!product) return res.status(400).send("Not found !");
+    const existIndex = cart.products.findIndex((item) => item.productId.toString() === productId); 
+    if(adjust === 'increment'){
+        cart.products[existIndex].quantity += 1;
+        cart.products[existIndex].totalProductPrice += product.price;
+    }else if(adjust === 'decrement'){
+        cart.products[existIndex].quantity -= 1;
+        cart.products[existIndex].totalProductPrice -= product.price;
+    }
+    cart.totalCartPrice = cart.products.reduce((total,value) => total+value.totalProductPrice,0);
+    return await cart.save();
+}
+
 module.exports = {
     updateCart,
     getCartById,
-    deleteCart
+    deleteCart,
+    updateCount
 };
