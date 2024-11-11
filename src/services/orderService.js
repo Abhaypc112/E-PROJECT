@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Address = require("../models/addressModel");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
@@ -22,12 +23,31 @@ const addOrder = async (userId,paymentMethode,addressId) => {
 
 // Get orders
 const getOrders = async (userId) => {
-    const orders = await Order.find({userId})
-    .populate({
-        path: 'products.productId',
-        model:'Product',
-        select: `name description price images`
-    })
+    const orders = await Order.aggregate([
+        {$match:{userId: new mongoose.Types.ObjectId(userId)}},
+        // {
+        //     $unwind:'$products'
+        // },
+        {
+            $lookup:{
+                from:'products',
+                localField:'products.productId',
+                foreignField:'_id',
+                as:'productDetails'
+            }
+        },
+        {
+            $project:{
+                deliveryDetails:1,
+                products:1,
+                productDetails:1,
+                paymentMethode:1,
+                totalAmount:1,
+                status:1,
+                date:1
+            }
+        }
+    ])
     return orders
 }
 

@@ -4,8 +4,11 @@ const usersRouter = require('./routes/userRoutes');
 const cartRouter = require('./routes/cartRoutes');
 const wishlistRouter = require('./routes/wishlistRouter');
 const orderRouter = require('./routes/orderRouter');
+const errorHandler = require('./middlewares/errorMiddleware');
 const app = express();
 app.use(express.urlencoded({extended:true}));
+
+app.use(errorHandler);
 
 app.use(productRouter) // Define products route
 app.use(usersRouter) // Define users route
