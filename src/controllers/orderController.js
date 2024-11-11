@@ -4,8 +4,10 @@ const { addOrder, getOrders } = require("../services/orderService");
 const palceOrder = async (req,res) => {
     const {userId,role} = req.user;
     if(!role === ('user' || 'admin')) throw new Error({message:"Not Authorization !"});
+    const paymentMethode = req.body.paymentMethode;
+    const defaultAddress = req.params.addressId;
     try{
-        const order = await addOrder(userId);
+        const order = await addOrder(userId,paymentMethode,defaultAddress);
         res.status(201).json({message:'Success',data:order});
     }catch(error){
         console.log('Error update cart : ',error);

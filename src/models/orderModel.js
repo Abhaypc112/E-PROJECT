@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     products: {type:Array, required:true},
     paymentMethode: {type:String, required:true},
     totalAmount: {type:Number, required:true},
-    status: {type:String, required:true},
+    status: {type:String, required:true, default:'Placed'},
     date: {type:Date, required:true, default:Date.now()}
 })
 const Order = mongoose.model('Order',orderSchema);

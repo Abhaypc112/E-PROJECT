@@ -21,7 +21,8 @@ const getAllAddress = async (userId) => {
 const getAddressById = async (userId,defaultAd) => {
     const address = await Address.findOne({userId});
     if(!address) throw new Error({message:'Address not found !'})
-    return address.addressList.filter(item => item._id.toString() === defaultAd)
+    const currentAddress = address.addressList.filter(item => item._id.toString() === defaultAd)
+    return currentAddress[0];
 }
 
 // Update address

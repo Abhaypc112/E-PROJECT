@@ -4,8 +4,8 @@ const { palceOrder, getUserOrders } = require('../controllers/orderController');
 const { addUserAddress, getUserAllAddress, getUserAddressById, updateUserAddress, deleteUserAddress } = require('../controllers/addressController');
 const orderRouter = express.Router();
 
+orderRouter.post('/users/:id/order/:addressId',userAuth,palceOrder)
 orderRouter.route('/users/:id/order')
-    .post(userAuth,palceOrder)
     .get(userAuth,getUserOrders)
 orderRouter.route('/users/:id/address')
     .post(userAuth,addUserAddress)
