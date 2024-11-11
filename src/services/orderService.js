@@ -1,3 +1,4 @@
+const Address = require("../models/addressModel");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 
@@ -6,7 +7,7 @@ const Order = require("../models/orderModel");
 const addOrder = async (userId) => {
     const cart = await Cart.findOne({userId});
     if(!cart.products.length) throw new Error({message:'Cart not fount !'});
-    const deliveryDetails = {fullName:"Abhay",palce:'Calicut',address:"hasi",pincode:9866,phone:9865675};
+    const deliveryDetails = await Address.findOne({userId});
     const products = cart.products;
     const paymentMethode = 'COD'
     const totalAmount = cart.totalCartPrice;
@@ -17,7 +18,7 @@ const addOrder = async (userId) => {
 
 // Get orders
 const getOrders = async (userId) => {
-    const orders = await Order.findOne({userId})
+    const orders = await Order.find({userId})
     .populate({
         path: 'products.productId',
         model:'Product',
