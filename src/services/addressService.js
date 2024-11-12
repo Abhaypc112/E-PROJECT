@@ -5,7 +5,7 @@ const Address = require("../models/addressModel")
 const addAddress  = async (userId,addressDetails) => {
     const address = await Address.findOne({userId});
     if(!address){
-        const newAddress = new Address({userId,addressList:[{addressDetails}]});
+        const newAddress = new Address({userId,addressList:[addressDetails]});
         return await newAddress.save();
     }
     address.addressList.push(addressDetails);
