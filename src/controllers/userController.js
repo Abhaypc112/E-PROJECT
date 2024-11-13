@@ -5,10 +5,10 @@ const generateToken = require("../utils/jsonwebtoken");
 
 // Add new user
 const addUser = async (req,res) => {
-    const {name,username,email,password} = req.body;
+    const {name,username,email,password,role} = req.body;
     const hashPassword = await bcrypt.hash(password,10);
     try{
-        const user = await addNewUser({name,username,email,password:hashPassword});
+        const user = await addNewUser({name,username,email,password:hashPassword,role});
         if(!user) return res.status(400).send("User not create !");
         res.status(201).json({status:"Success",data:user});
     }catch(error){
@@ -25,7 +25,7 @@ const getUser = async (req,res) => {
         if(!user) return res.status(400).send("User not found !");
         const customer = await bcrypt.compare(password,user.password);
         if(!customer) return res.status(400).send("Invalid password !");
-        const token = await generateToken(user.id);
+        const token = await generateToken(user.id,user.role);
         res.json({token});
     }catch(error){
         console.log('Error fetch user : ',error);
