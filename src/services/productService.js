@@ -1,15 +1,22 @@
 const Product = require("../models/productModel");
+const CustomError = require("../utils/customError");
 
 // Get product services
 const getAllProducts = async () => {   
-    return await Product.find();
-}
+    const products = await Product.find();
+    if(!products.length) new CustomError("Produts not found !",404);
+    return products;
+};
 const getProductById = async (productId) => {
-    return await Product.findById(productId);
-}
+    const product = await Product.findById(productId);
+    if(!product) throw new CustomError("Produt not found !");
+    return product;
+};
 const getProductsByCaregory = async (category) => {
-    return await Product.find({category});
-}
+    const products = await Product.find({category});
+    if(!products.length) throw new CustomError(`${category} caregory not found !`,404);
+    return products;
+};
 
 module.exports = {
     getAllProducts,

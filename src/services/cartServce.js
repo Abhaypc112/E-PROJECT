@@ -1,10 +1,11 @@
 const Cart = require("../models/cartModel");
+const CustomError = require("../utils/customError");
 const { getProductById } = require("./productService");
 
 // Cart product add and update service
 const updateCart = async (userId,productId,productQuantity) =>{
         const product = await getProductById(productId);
-        if(!product) throw new Error({message:"Product not found !"});
+        if(!product) throw new CustomError({message:"Product not found !"});
         const userCart = await Cart.findOne({userId});
         if(userCart){
             const existIndex = userCart.products.findIndex((item) => item.productId.toString() === productId); 
@@ -24,7 +25,7 @@ const updateCart = async (userId,productId,productQuantity) =>{
             const cart = new Cart(productDetails);
             return await cart.save();
         }
-}
+};
 
 // Get cart products service
 const getCartById = async (userId) => {
@@ -34,24 +35,24 @@ const getCartById = async (userId) => {
         select: `name description price images`
       });
     return cart;
-}
+};
 
 // Delete cart products service
 const deleteCart = async (userId,productId) => {
     const cart = await Cart.findOne({userId});
-    if(!cart) throw new Error({message:"Cart not found !"});
+    if(!cart) throw new CustomError({message:"Cart not found !"});
     cart.products = cart.products.filter((product) => product.productId.toString() !== productId);
     const totalCartPrice = cart.products.reduce((total,value) => total+value.totalProductPrice,0);
     cart.totalCartPrice = totalCartPrice;
     return await cart.save();
-}
+};
 
 // Update cart count service
 const updateCount = async (userId,productId,adjust) => {
     const cart = await Cart.findOne({userId});
-    if(!cart) throw new Error({message:"Cart not found !"});
+    if(!cart) throw new CustomError({message:"Cart not found !"});
     const product = await getProductById(productId);
-    if(!product) throw new Error({message:"Product not found !"});
+    if(!product) throw new CustomError({message:"Product not found !"});
     const existIndex = cart.products.findIndex((item) => item.productId.toString() === productId); 
     if(adjust === 'increment'){
         cart.products[existIndex].quantity += 1;
@@ -62,7 +63,7 @@ const updateCount = async (userId,productId,adjust) => {
     }
     cart.totalCartPrice = cart.products.reduce((total,value) => total+value.totalProductPrice,0);
     return await cart.save();
-}
+};
 
 module.exports = {
     updateCart,

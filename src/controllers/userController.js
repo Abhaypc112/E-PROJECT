@@ -1,39 +1,20 @@
-const { addNewUser, getUserInfo } = require("../services/userService");
-const bcrypt = require('bcrypt');
-const generateToken = require("../utils/jsonwebtoken");
-;
+const { addNewUser, authenticateUser } = require("../services/userService");
+const catchAsync = require("../utils/catchAsync");
 
 // Add new user
-const addUser = async (req,res) => {
-    const {name,username,email,password,role} = req.body;
-    const hashPassword = await bcrypt.hash(password,10);
-    try{
-        const user = await addNewUser({name,username,email,password:hashPassword,role});
-        if(!user) return res.status(400).send("User not create !");
-        res.status(201).json({status:"Success",data:user});
-    }catch(error){
-        console.log('Error add user : ',error);
-        res.status(500).json({ message: 'Server error while adding user !' });
-    }
-}
+const addUser = catchAsync( async (req,res,next) => {
+    const user = await addNewUser(req.body);
+    res.status(201).json({status:"Success",data:user});
+});
 
-// Get user
-const getUser = async (req,res) => {
+// Login user
+const loginUser = catchAsync( async (req,res,next) => {
     const {username,password} = req.body;
-    try{
-        const user = await getUserInfo(username);
-        if(!user) return res.status(400).send("User not found !");
-        const customer = await bcrypt.compare(password,user.password);
-        if(!customer) return res.status(400).send("Invalid password !");
-        const token = await generateToken(user.id,user.role);
-        res.json({token});
-    }catch(error){
-        console.log('Error fetch user : ',error);
-        res.status(500).json({ message: 'Server error while fetching user !' });
-    }
-}
+        const token = await authenticateUser(username,password);
+        res.status(200).json({status:"success",token});
+});
 
 module.exports = {
     addUser,
-    getUser,
-}
+    loginUser,
+};

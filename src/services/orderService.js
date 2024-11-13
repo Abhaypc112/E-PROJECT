@@ -3,12 +3,13 @@ const Address = require("../models/addressModel");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 const { getAddressById } = require("./addressService");
+const CustomError = require("../utils/customError");
 
 
 // Add order service
 const addOrder = async (userId,paymentMethode,addressId) => {
     const cart = await Cart.findOne({userId});
-    if(!cart.products.length) throw new Error({message:'Cart not fount !'});
+    if(!cart.products.length) throw new CustomError('Cart not fount !',404);
     const products = cart.products;
     const totalAmount = cart.totalCartPrice;
     const deliveryDetails = await getAddressById(userId,addressId);
@@ -19,7 +20,7 @@ const addOrder = async (userId,paymentMethode,addressId) => {
         await cart.save();
     }
     return placedOrder;
-}
+};
 
 // Get orders
 const getOrders = async (userId) => {
@@ -49,9 +50,9 @@ const getOrders = async (userId) => {
         }
     ])
     return orders
-}
+};
 
 module.exports = {
     addOrder,
     getOrders
-}
+};
