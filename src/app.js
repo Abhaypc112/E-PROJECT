@@ -10,10 +10,14 @@ app.use(express.urlencoded({extended:true}));
 
 app.use(errorHandler);
 
+// User side
 app.use(productRouter) // Define products route
 app.use(usersRouter) // Define users route
 app.use(cartRouter) // Define carts route
 app.use(wishlistRouter) // Define wishlist route
 app.use(orderRouter) // Define order route
+
+//Admin side
+
 
 module.exports = app;
