@@ -52,7 +52,17 @@ const getOrders = async (userId) => {
     return orders
 };
 
+//Get all orders
+const getAllOrders = async () => {
+    const allOrders = await Order.find();
+    console.log(allOrders);
+    
+    if(!allOrders.length) throw new CustomError('Cart not fount !',404);
+    return allOrders;
+}
+
 module.exports = {
     addOrder,
-    getOrders
+    getOrders,
+    getAllOrders,
 };

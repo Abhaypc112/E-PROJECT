@@ -1,5 +1,7 @@
-const { addNewUser, authenticateUser } = require("../services/userService");
+const User = require("../models/userModel");
+const { addNewUser, authenticateUser, getAllUsers } = require("../services/userService");
 const catchAsync = require("../utils/catchAsync");
+const CustomError = require("../utils/customError");
 
 // Add new user
 const addUser = catchAsync( async (req,res,next) => {
@@ -14,7 +16,14 @@ const loginUser = catchAsync( async (req,res,next) => {
         res.status(200).json({status:"success",token});
 });
 
+// Get all users
+const getTotalusers = catchAsync(async(req,res) => {
+    const totalUsers = await getAllUsers();
+    res.status(200).json({status:"success",data:totalUsers});
+});
+
 module.exports = {
     addUser,
     loginUser,
+    getTotalusers,
 };

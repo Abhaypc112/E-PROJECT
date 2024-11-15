@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const CustomError = require("../utils/customError");
 const generateToken = require("../utils/jsonwebtoken");
 
-//Add and login user services
+//Add user services
 const addNewUser = async (data) => {
     const {name,username,email,password,role} = data;
     const hashPassword = await bcrypt.hash(password,10);
@@ -12,6 +12,8 @@ const addNewUser = async (data) => {
     if(!user) new CustomError("User not create !",400);
     return user;
 };
+
+//login user services
 const authenticateUser = async (username,password) => {
     const user = await User.findOne({username});
     if(!user) throw new CustomError("User not found !",404);
@@ -21,7 +23,15 @@ const authenticateUser = async (username,password) => {
     return token;
 };
 
+//Get all users
+const getAllUsers = async () => {
+    const allUsers = await User.find();
+    if(!allUsers.length) return next(new CustomError("Users not found !",404));
+    return allUsers;
+};
+
 module.exports = {
     addNewUser,
     authenticateUser,
+    getAllUsers
 };

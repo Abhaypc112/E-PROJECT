@@ -3,8 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 
 // Add address
 const addUserAddress = async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
+    const {userId} = req.user;
     const addressDetails = req.body;
     const address = await addAddress(userId,addressDetails);
     res.status(201).json({message:'Success',data:address});
@@ -12,16 +11,14 @@ const addUserAddress = async (req,res) => {
 
 // Get all address
 const getUserAllAddress = catchAsync( async (req,res,next) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !")
-        const address = await getAllAddress(userId);
-        res.status(201).json({message:'Success',data:address});
+    const {userId} = req.user;
+    const address = await getAllAddress(userId);
+    res.status(201).json({message:'Success',data:address});
 });
 
 // Get default address
 const getUserAddressById = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
+    const {userId} = req.user;
     const defaultAd = req.params.defaultAd
         const address = await getAddressById(userId,defaultAd);
         res.status(201).json({message:'Success',data:address});
@@ -29,8 +26,7 @@ const getUserAddressById = catchAsync( async (req,res) => {
 
 // Update address
 const updateUserAddress = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
+    const {userId} = req.user;
     const defaultAd = req.params.defaultAd;
     const addressDetails = req.body;
         const address = await updateAddress(userId,defaultAd,addressDetails);
@@ -41,8 +37,7 @@ const updateUserAddress = catchAsync( async (req,res) => {
 
 // Delete address
 const deleteUserAddress = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
+    const {userId} = req.user;
     const defaultAd = req.params.defaultAd;
         const address = await deleteAddress(userId,defaultAd);
         res.status(201).json({message:'Success',data:address});

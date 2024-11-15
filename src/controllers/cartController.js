@@ -3,8 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 
 // Add product to cart
 const addProductCart = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
+    const {userId} = req.user;
     const productId = req.params.productId;
     const quantity = req.body.quantity;
     const productQuantity = Number(quantity);
@@ -14,26 +13,23 @@ const addProductCart = catchAsync( async (req,res) => {
 
 // Get cart products
 const getProductCart = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
+    const {userId} = req.user;
     const cart = await getCartById(userId);
     res.status(200).json({message:'Success',data:cart});
 });
 
 // Delete cart products
 const deleteProductCart = async (req,res) => {
-    const {userId,role} = req.user;
+    const {userId} = req.user;
     const productId = req.params.productId;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
     const cart = await deleteCart(userId,productId);
     res.status(200).json({message:'Success',data:cart});
 }
 
 // Product count increment and decrement 
 const adjustCount = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
+    const {userId} = req.user;
     const {productId,adjust} = req.params;
-    if(!role === ('user' || 'admin')) return res.status(401).send("Not Authorization !");
     const cart = await updateCount(userId,productId,adjust);
     res.status(200).json({message:'Success',data:cart});
 });

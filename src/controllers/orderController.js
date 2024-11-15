@@ -1,10 +1,9 @@
-const { addOrder, getOrders } = require("../services/orderService");
+const { addOrder, getOrders, getAllOrders } = require("../services/orderService");
 const catchAsync = require("../utils/catchAsync");
 
 // Add order
 const palceOrder = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) throw new Error({message:"Not Authorization !"});
+    const {userId} = req.user;
     const paymentMethode = req.body.paymentMethode;
     const defaultAddress = req.params.addressId;
     const order = await addOrder(userId,paymentMethode,defaultAddress);
@@ -13,13 +12,20 @@ const palceOrder = catchAsync( async (req,res) => {
 
 // Get orders
 const getUserOrders = catchAsync( async (req,res) => {
-    const {userId,role} = req.user;
-    if(!role === ('user' || 'admin')) throw new Error({message:"Not Authorization !"});
+    const {userId} = req.user;
     const order = await getOrders(userId);
     res.status(201).json({message:'Success',data:order});
 });
 
+// Get total orders
+const getToatalOrders = catchAsync(async (req,res) => {
+    const totalOrders = await getAllOrders();
+    res.status(201).json({message:'Success',data:totalOrders});
+});
+
+
 module.exports = {
     palceOrder,
-    getUserOrders
+    getUserOrders,
+    getToatalOrders,
 };

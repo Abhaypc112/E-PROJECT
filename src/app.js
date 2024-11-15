@@ -6,6 +6,7 @@ const wishlistRouter = require('./routes/wishlistRouter');
 const orderRouter = require('./routes/orderRouter');
 const errorHandler = require('./middlewares/errorMiddleware');
 const mongooseErrorHandler = require('./middlewares/mongooseErrorHandler');
+const adminRouter = require('./routes/adminRouter');
 const app = express();
 app.use(express.urlencoded({extended:true}));
 
@@ -17,6 +18,7 @@ app.use(wishlistRouter) // Define wishlist route
 app.use(orderRouter) // Define order route
 
 //Admin side
+app.use(adminRouter) // Define admin route
 
 //Middleware for mongoose error handler
 app.use(mongooseErrorHandler)

@@ -4,12 +4,12 @@ const catchAsync = require('../utils/catchAsync');
 const CustomError = require('../utils/customError');
 const JWT_SECRET_KEY = config.JWT_SECRET_KEY;
 
-// User authorization
-const userAuth = catchAsync( (req,res,next) => {
+// Admin authorization
+const adminAuth = catchAsync( (req,res,next) => {
     const token = req.header('Authorization');
     if(!token) return res.status(401).json({ message: 'Access denied, token missing!' });
     const verified = jwt.verify(token,JWT_SECRET_KEY);
-    if(verified.role === "user" || verified.role === "admin"){
+    if(verified.role === "admin"){
         req.user = verified;
         next();
     }else{
@@ -17,4 +17,4 @@ const userAuth = catchAsync( (req,res,next) => {
     }
 });
 
-module.exports = userAuth;
+module.exports = adminAuth;
