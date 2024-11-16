@@ -19,6 +19,7 @@ const authenticateUser = async (username,password) => {
     if(!user) throw new CustomError("User not found !",404);
     const customer = await bcrypt.compare(password,user.password);
     if(!customer) throw new CustomError("Invalid password !",404);
+    if(user.block) throw new CustomError("You are blocked ! - Contact admin",401);
     const token = await generateToken(user.id,user.role);
     return token;
 };
@@ -30,8 +31,15 @@ const getAllUsers = async () => {
     return allUsers;
 };
 
+// Update status
+const updateStatus = async (userId,status) => {
+    const user = await User.findById(userId);
+    user.block = status;
+    return await user.save();
+}
 module.exports = {
     addNewUser,
     authenticateUser,
-    getAllUsers
+    getAllUsers,
+    updateStatus,
 };

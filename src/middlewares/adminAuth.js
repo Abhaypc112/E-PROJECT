@@ -13,7 +13,7 @@ const adminAuth = catchAsync( (req,res,next) => {
         req.user = verified;
         next();
     }else{
-        throw new CustomError ('User not authorized !',401 );
+        throw new CustomError ('Access forbidden: Admin only !',401 );
     }
 });
 

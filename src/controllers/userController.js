@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-const { addNewUser, authenticateUser, getAllUsers } = require("../services/userService");
+const { addNewUser, authenticateUser, getAllUsers, updateStatus } = require("../services/userService");
 const catchAsync = require("../utils/catchAsync");
 const CustomError = require("../utils/customError");
 
@@ -22,8 +22,21 @@ const getTotalusers = catchAsync(async(req,res) => {
     res.status(200).json({status:"success",data:totalUsers});
 });
 
+// Block and Unblock user
+const updateUserStatus = catchAsync( async (req,res) => {
+    let {userId,status} = req.params;
+    if(status === "block"){
+        status = true;
+    }else if(status === "unblock"){
+        status = false;
+    };
+    const updateUser = await updateStatus(userId,status);
+    res.status(200).json({status:"success",data:updateUser});
+})
+
 module.exports = {
     addUser,
     loginUser,
     getTotalusers,
+    updateUserStatus,
 };
