@@ -1,4 +1,4 @@
-const { addOrder, getOrders, getAllOrders } = require("../services/orderService");
+const { addOrder, getOrders, getAllOrders, getTotalSales, getTotalProductsSales } = require("../services/orderService");
 const catchAsync = require("../utils/catchAsync");
 
 // Add order
@@ -23,9 +23,21 @@ const getToatalOrders = catchAsync(async (req,res) => {
     res.status(201).json({message:'Success',data:totalOrders});
 });
 
+// Total Sales
+const totalSales = catchAsync(async(req,res) => {
+    const sales = await getTotalSales()
+    res.status(201).json({message:'Success',data:sales});
+})
 
+// Total products saleds
+const totalProductsSaleds = catchAsync(async(req,res) => {
+    const sales = await getTotalProductsSales()
+    res.status(201).json({message:'Success',data:sales});
+})
 module.exports = {
     palceOrder,
     getUserOrders,
     getToatalOrders,
+    totalSales,
+    totalProductsSaleds,
 };

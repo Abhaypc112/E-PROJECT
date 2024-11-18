@@ -1,5 +1,4 @@
 const { default: mongoose } = require("mongoose");
-const Address = require("../models/addressModel");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 const { getAddressById } = require("./addressService");
@@ -55,12 +54,32 @@ const getOrders = async (userId) => {
 //Get all orders
 const getAllOrders = async () => {
     const allOrders = await Order.find();
-    if(!allOrders.length) throw new CustomError('Cart not fount !',404);
+    if(!allOrders.length) throw new CustomError('Orders not fount !',404);
     return allOrders;
 }
 
+// Get total sales
+const getTotalSales = async () => {
+    const sales = await Order.aggregate([
+        {$group:{_id:null,totalSales:{$sum:"$totalAmount"}}}
+    ])
+    if(!sales) throw new CustomError('Totalsales not fount !',404);
+    return sales;
+}
+
+// Get total products saled
+const getTotalProductsSales = async () => {
+    const product = await Order.aggregate([
+        {$unwind:"$products"},
+        {$group:{_id:null,products:{$sum:"$products.quantity"}}}
+    ])
+    if(!product) throw new CustomError('Count not fount !',404);
+    return product
+}
 module.exports = {
     addOrder,
     getOrders,
     getAllOrders,
+    getTotalSales,
+    getTotalProductsSales,
 };

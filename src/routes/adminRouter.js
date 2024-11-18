@@ -1,6 +1,6 @@
 const express = require('express');
 const adminAuth = require('../middlewares/adminAuth');
-const { getToatalOrders } = require('../controllers/orderController');
+const { getToatalOrders, totalSales, totalProductsSaleds } = require('../controllers/orderController');
 const { getTotalusers, updateUserStatus } = require('../controllers/userController');
 const { allProducts, addProduts, deleteProduct } = require('../controllers/productController');
 const { updateProduct } = require('../controllers/productController');
@@ -16,5 +16,7 @@ adminRouter.post('/admin/product',adminAuth,productValidation,addProduts);
 adminRouter.route('/admin/:productId')
     .patch(adminAuth,updateProduct)
     .delete(adminAuth,deleteProduct)
+adminRouter.get('/admin/totalsales',adminAuth,totalSales)
+adminRouter.get('/admin/totalproductssales',adminAuth,totalProductsSaleds)
 
 module.exports = adminRouter;
