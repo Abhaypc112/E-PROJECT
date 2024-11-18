@@ -1,7 +1,6 @@
 const User = require("../models/userModel");
 const { addNewUser, authenticateUser, getAllUsers, updateStatus } = require("../services/userService");
 const catchAsync = require("../utils/catchAsync");
-const CustomError = require("../utils/customError");
 
 // Add new user
 const addUser = catchAsync( async (req,res,next) => {

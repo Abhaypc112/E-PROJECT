@@ -7,6 +7,8 @@ const orderRouter = require('./routes/orderRouter');
 const errorHandler = require('./middlewares/errorMiddleware');
 const mongooseErrorHandler = require('./middlewares/mongooseErrorHandler');
 const adminRouter = require('./routes/adminRouter');
+const catchAsync = require('./utils/catchAsync');
+const CustomError = require('./utils/customError');
 const app = express();
 app.use(express.urlencoded({extended:true}));
 
@@ -17,13 +19,18 @@ app.use('/api',cartRouter) // Define carts route
 app.use('/api',wishlistRouter) // Define wishlist route
 app.use('/api',orderRouter) // Define order route
 
-//Admin side
+// Admin side
 app.use('/api',adminRouter) // Define admin route
 
-//Middleware for mongoose error handler
+// Handle undefined routes
+app.use('*',catchAsync((req, res, next) => {
+    next(new CustomError('Route not found!', 404));
+  }));
+
+// Middleware for mongoose error handler
 app.use(mongooseErrorHandler)
 
-//Middleware for error handler
+// Middleware for error handler
 app.use(errorHandler);
 
 module.exports = app;
