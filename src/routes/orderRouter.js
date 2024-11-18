@@ -5,6 +5,8 @@ const { addUserAddress, getUserAllAddress, getUserAddressById, updateUserAddress
 const userAddsVali = require('../validators/addressValidator');
 const orderRouter = express.Router();
 
+
+// Routing for orders
 orderRouter.post('/users/:id/order/:addressId',userAuth,palceOrder)
 orderRouter.route('/users/:id/order')
     .get(userAuth,getUserOrders)
