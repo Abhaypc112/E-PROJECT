@@ -11,14 +11,14 @@ const app = express();
 app.use(express.urlencoded({extended:true}));
 
 // User side
-app.use(productRouter) // Define products route
-app.use(usersRouter) // Define users route
-app.use(cartRouter) // Define carts route
-app.use(wishlistRouter) // Define wishlist route
-app.use(orderRouter) // Define order route
+app.use('/api',productRouter) // Define products route
+app.use('/api',usersRouter) // Define users route
+app.use('/api',cartRouter) // Define carts route
+app.use('/api',wishlistRouter) // Define wishlist route
+app.use('/api',orderRouter) // Define order route
 
 //Admin side
-app.use(adminRouter) // Define admin route
+app.use('/api',adminRouter) // Define admin route
 
 //Middleware for mongoose error handler
 app.use(mongooseErrorHandler)
