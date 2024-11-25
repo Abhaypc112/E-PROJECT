@@ -6,13 +6,13 @@ const JWT_SECRET_KEY = config.JWT_SECRET_KEY;
 
 // User authorization
 const userAuth = catchAsync( (req,res,next) => {
-    const token = req.header('Authorization');
+    const token = req.headers['authorization'];
     if(!token) return res.status(401).json({ message: 'Access denied, token missing!' });
     const verified = jwt.verify(token,JWT_SECRET_KEY);
     if(verified.role === "user" || verified.role === "admin"){
         req.user = verified;
         next();
-    }else{
+    }else{ 
         throw new CustomError ('User not authorized !',401 );
     }
 });

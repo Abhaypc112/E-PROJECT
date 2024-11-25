@@ -3,13 +3,14 @@ const CustomError = require("../utils/customError");
 
 // Add address
 const addAddress  = async (userId,addressDetails) => {
-    const address = await Address.findOne({userId});
-    if(!address){
-        const newAddress = new Address({userId,addressList:[addressDetails]});
+    const userAddress = await Address.findOne({userId});
+    if(!userAddress){
+        const newAddress = new Address({userId,addressDetails});
         return await newAddress.save();
     }
-    address.addressList.push(addressDetails);
-    return await address.save();
+    const {fullName,phone,address,pincode} = addressDetails;
+    userAddress.addressDetails = {fullName,phone,address,pincode};
+    return await userAddress.save();
 };
 
 // Get All address
@@ -20,11 +21,10 @@ const getAllAddress = async (userId) => {
 };
 
 // Get address by Id
-const getAddressById = async (userId,defaultAd) => {
+const getAddressById = async (userId) => {
     const address = await Address.findOne({userId});
     if(!address) throw new CustomError({message:'Address not found !'})
-    const currentAddress = address.addressList.filter(item => item._id.toString() === defaultAd)
-    return currentAddress[0];
+    return address;
 };
 
 // Update address

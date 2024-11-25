@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
 const CustomError = require("../utils/customError");
 const generateToken = require("../utils/jsonwebtoken");
+const { use } = require("../routes/productRoutes");
 
 //Add user services
 const addNewUser = async (data) => {
@@ -15,13 +16,13 @@ const addNewUser = async (data) => {
 
 //login user services
 const authenticateUser = async (username,password) => {
-    const user = await User.findOne({username});
-    if(!user) throw new CustomError("User not found !",404);
+    const user = await User.findOne({username}); 
+    if(!user) throw new CustomError("Invalid username or passwordttt !",404);
     const customer = await bcrypt.compare(password,user.password);
     if(!customer) throw new CustomError("Invalid password !",404);
     if(user.block) throw new CustomError("You are blocked ! - Contact admin",401);
     const token = await generateToken(user.id,user.role);
-    return token;
+    return {token,user:{name:user.name,email:user.email,role:user.role}};
 };
 
 //Get all users
@@ -34,12 +35,22 @@ const getAllUsers = async () => {
 // Update status
 const updateStatus = async (userId,status) => {
     const user = await User.findById(userId);
+    if(user) return next(new CustomError("Users not found !",404));
     user.block = status;
     return await user.save();
 }
+
+// Get user by id
+const getUserById = async (userId) => {
+    const user = await User.findById(userId);
+    if(!user) throw new CustomError("Users not found !",404);
+    return user;
+}
+
 module.exports = {
     addNewUser,
     authenticateUser,
     getAllUsers,
     updateStatus,
+    getUserById,
 };

@@ -5,10 +5,10 @@ const cartRouter = express.Router();
 
 
 // Routing for cart
-cartRouter.route('/users/:id/cart/:productId')
+cartRouter.route('/users/cart/:productId')
     .post(userAuth,addProductCart)
     .delete(userAuth,deleteProductCart)
-cartRouter.get('/users/:id/cart',userAuth,getProductCart)
-cartRouter.patch('/users/:id/cart/:productId/:adjust',userAuth,adjustCount)
-
+cartRouter.get('/users/cart',userAuth,getProductCart)
+cartRouter.patch('/users/cart/:productId/:adjust',userAuth,adjustCount)
+ 
 module.exports = cartRouter;

@@ -1,12 +1,20 @@
-const { addOrder, getOrders, getAllOrders, getTotalSales, getTotalProductsSales } = require("../services/orderService");
+const { addOrder, getOrders, getAllOrders, getTotalSales, getTotalProductsSales, generateRazorpay } = require("../services/orderService");
 const catchAsync = require("../utils/catchAsync");
 
 // Add order
 const palceOrder = catchAsync( async (req,res) => {
     const {userId} = req.user;
     const paymentMethode = req.body.paymentMethode;
-    const defaultAddress = req.params.addressId;
-    const order = await addOrder(userId,paymentMethode,defaultAddress);
+    const order = await addOrder(userId,paymentMethode);
+    // console.log(order);
+    // if(order.paymentMethode === 'Upi'){
+    //     const payment = generateRazorpay(order._id,order.totalAmount);
+    //     console.log(payment);
+    //     res.status(201).json({message:'Success',data:payment});
+    // }else{
+
+    //     res.status(201).json({message:'Success',data:order});
+    // }
     res.status(201).json({message:'Success',data:order});
 });
 

@@ -1,4 +1,4 @@
-const { getAllProducts,getProductById, getProductsByCaregory, addNewProduct, updateProductById, deleteProductById } = require('../services/productService');
+const { getAllProducts,getProductById, getProductsByCaregory, addNewProduct, updateProductById, deleteProductById, getProductsCategory } = require('../services/productService');
 const catchAsync = require('../utils/catchAsync');
 
 // Controller for fetching all products
@@ -26,7 +26,6 @@ const addProduts = catchAsync( async (req,res) => {
 const updateProduct = catchAsync( async (req,res) => {
     const productDetails = req.body;
     const productId = req.params.productId;
-    console.log(req.params.productId);
     const product = await updateProductById(productId,productDetails);
     res.status(200).json({status:"Success",data:product}); 
 });
@@ -36,10 +35,17 @@ const deleteProduct = catchAsync( async (req,res) => {
     const product = await deleteProductById(productId);
     res.status(200).json({status:"Success",data:product}); 
 })
+
+// Products categorys
+const categorys = catchAsync( async (req,res) => {
+    const category = await getProductsCategory();
+    res.status(200).json({status:"Success",data:category}); 
+})
 module.exports = {
     allProducts,
     productById,
     addProduts,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    categorys,
 }

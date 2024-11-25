@@ -7,14 +7,14 @@ const orderRouter = express.Router();
 
 
 // Routing for orders
-orderRouter.post('/users/:id/order/:addressId',userAuth,palceOrder)
-orderRouter.route('/users/:id/order')
+orderRouter.post('/users/order',userAuth,palceOrder)
+orderRouter.route('/users/order')
     .get(userAuth,getUserOrders)
-orderRouter.route('/users/:id/address')
+orderRouter.route('/users/address')
     .post(userAuth,userAddsVali,addUserAddress)
     .get(userAuth,getUserAllAddress)
-orderRouter.route('/users/:id/address/:defaultAd')
-    .get(userAuth,getUserAddressById)
+orderRouter.route('/users/address/:defaultAd')
+    .get(userAuth,getUserAddressById) 
     .patch(userAuth,updateUserAddress)
     .delete(userAuth,deleteUserAddress)
 module.exports = orderRouter;

@@ -10,8 +10,14 @@ const adminRouter = require('./routes/adminRouter');
 const catchAsync = require('./utils/catchAsync');
 const CustomError = require('./utils/customError');
 const app = express();
+const cors = require('cors');
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
+app.use(cors({
+  origin:"http://localhost:3000",
+  credentials:true
+}));
 // User side
 app.use('/api',productRouter) // Define products route
 app.use('/api',usersRouter) // Define users route

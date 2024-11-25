@@ -1,3 +1,4 @@
+const Category = require("../models/category");
 const Product = require("../models/productModel");
 const CustomError = require("../utils/customError");
 
@@ -45,6 +46,12 @@ const deleteProductById = async (productId) => {
     if(!product) throw new CustomError('Product not fount !',404);
     return product
 }
+
+// Show product categorys
+const getProductsCategory = async () => {
+    const category = await Category.find();
+    return category;
+}
 module.exports = {
     getAllProducts,
     getProductById,
@@ -52,4 +59,5 @@ module.exports = {
     addNewProduct,
     updateProductById,
     deleteProductById,
+    getProductsCategory,
 };
