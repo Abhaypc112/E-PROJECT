@@ -40,7 +40,17 @@ const getOrders = async (userId) => {
 
 //Get all orders
 const getAllOrders = async () => {
-    const allOrders = await Order.find();
+    const allOrders = await Order.find()
+    .populate({
+        path: 'products.productId',
+        model:'Product',
+        select: `name description price images`
+    })
+    .populate({
+        path: 'userId',
+        model:'User',
+        select: `name role`
+    })
     if(!allOrders.length) throw new CustomError('Orders not fount !',404);
     return allOrders;
 }
