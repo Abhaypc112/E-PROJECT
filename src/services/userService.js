@@ -28,14 +28,14 @@ const authenticateUser = async (username,password) => {
 //Get all users
 const getAllUsers = async () => {
     const allUsers = await User.find();
-    if(!allUsers.length) return next(new CustomError("Users not found !",404));
+    if(!allUsers.length)throw new CustomError("Users not found !",404);
     return allUsers;
 };
 
 // Update status
 const updateStatus = async (userId,status) => {
     const user = await User.findById(userId);
-    if(user) return next(new CustomError("Users not found !",404));
+    if(!user) throw new CustomError("Users not found !",404);
     user.block = status;
     return await user.save();
 }

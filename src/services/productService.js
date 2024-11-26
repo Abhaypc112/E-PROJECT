@@ -22,7 +22,7 @@ const getProductsByCaregory = async (category) => {
 // Add products service
 const addNewProduct = async (productDetails) => {
     const {name,description,category,price,stock,rating,material,images,tags} = productDetails;
-    const product = new Product({name,description,category,price,stock,rating,material,images:images.split(','),tags:tags.split(',')});
+    const product = new Product({name,description,category,price,stock,rating,material,images,tags});
     if(!product) throw new CustomError('Product not added !',500);
     return await product.save();
 }
@@ -30,7 +30,7 @@ const addNewProduct = async (productDetails) => {
 // Update product service
 const updateProductById = async (productId,updatedDetails) => {
     const {name,description,category,price,stock,rating,material,images,tags} = updatedDetails;
-    const newData = {name,description,category,price,stock,rating,material,images:images.split(','),tags:tags.split(',')}
+    const newData = {name,description,category,price,stock,rating,material,images,tags}
     let product = await Product.findByIdAndUpdate(
         productId,
         {$set: newData},
