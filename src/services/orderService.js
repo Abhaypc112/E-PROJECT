@@ -2,12 +2,6 @@ const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 const { getAllAddress } = require("./addressService");
 const CustomError = require("../utils/customError");
-// const Razorpay = require('razorpay');
-
-// var instance = new Razorpay({
-//     key_id: 'rzp_test_8p35IDtmohyXoM',
-//     key_secret: 'HxuoQcfFRzvTdycxqfqqbE3u',
-//   });
 
 
 // Add order service

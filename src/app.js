@@ -28,6 +28,8 @@ app.use('/api',orderRouter) // Define order route
 // Admin side
 app.use('/api',adminRouter) // Define admin route
 
+
+
 // Handle undefined routes
 app.use('*',catchAsync((req, res, next) => {
     next(new CustomError('Route not found!', 404));

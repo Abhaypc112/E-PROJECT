@@ -6,15 +6,6 @@ const palceOrder = catchAsync( async (req,res) => {
     const {userId} = req.user;
     const paymentMethode = req.body.paymentMethode;
     const order = await addOrder(userId,paymentMethode);
-    // console.log(order);
-    // if(order.paymentMethode === 'Upi'){
-    //     const payment = generateRazorpay(order._id,order.totalAmount);
-    //     console.log(payment);
-    //     res.status(201).json({message:'Success',data:payment});
-    // }else{
-
-    //     res.status(201).json({message:'Success',data:order});
-    // }
     res.status(201).json({message:'Success',data:order});
 });
 

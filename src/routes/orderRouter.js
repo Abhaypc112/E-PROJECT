@@ -3,6 +3,7 @@ const userAuth = require('../middlewares/userAuth');
 const { palceOrder, getUserOrders } = require('../controllers/orderController');
 const { addUserAddress, getUserAllAddress, getUserAddressById, updateUserAddress, deleteUserAddress } = require('../controllers/addressController');
 const userAddsVali = require('../validators/addressValidator');
+const { createOrder, validatePayment } = require('../services/paymentService');
 const orderRouter = express.Router();
 
 
@@ -17,4 +18,7 @@ orderRouter.route('/users/address/:defaultAd')
     .get(userAuth,getUserAddressById) 
     .patch(userAuth,updateUserAddress)
     .delete(userAuth,deleteUserAddress)
+orderRouter.post('/payment',createOrder)
+orderRouter.post('/verify-payment',userAuth,validatePayment)
+
 module.exports = orderRouter;
