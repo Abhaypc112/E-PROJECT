@@ -1,14 +1,34 @@
-const { getAllProducts,getProductById, getProductsByCaregory, addNewProduct, updateProductById, deleteProductById, getProductsCategory } = require('../services/productService');
+const { getAllProducts,getProductById, getProductsByCaregory, addNewProduct, updateProductById, deleteProductById, getProductsCategory, getTotalCountByCategory, getTotalCount } = require('../services/productService');
 const catchAsync = require('../utils/catchAsync');
 
 // Controller for fetching all products
 const allProducts = catchAsync( async (req,res)=>{
-    const {category} = req.query;
-    let products;
-    if(category) products = await getProductsByCaregory(category);
-    else products = await getAllProducts();
-    res.status(200).json({status:"Success",data:products});
+    const category = req.query.category;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    let products, total;
+
+    if(category) {
+        products = await getProductsByCaregory(category, skip, limit);
+        total = await getTotalCountByCategory(category);
+    }
+    else {
+        products = await getAllProducts(skip, limit);
+        total = await getTotalCount();
+    }
+    res.status(200).json({status:"Success",data : {
+        products,
+        total,
+        totalPages: Math.ceil(total/limit),
+        currentPage: page,
+    },});
 });
+
+const getHomeProducts = catchAsync( async() => {
+   const products = await getAllProducts(skip, limit);
+    res.status(200).json({status:"Success",data :products })
+})
 
 // Controller for fetching product by id
 const productById = catchAsync( async (req,res)=>{
@@ -48,4 +68,5 @@ module.exports = {
     updateProduct,
     deleteProduct,
     categorys,
+    getHomeProducts,
 }
