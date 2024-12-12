@@ -59,7 +59,7 @@ const updateCount = async (userId,productId,adjust) => {
     if(adjust === 'increment'){
         cart.products[existIndex].quantity += 1;
         cart.products[existIndex].totalProductPrice += product.price;
-    }else if(adjust === 'decrement'){
+    }else if(adjust === 'decrement' && cart.products[existIndex].quantity > 1){
         cart.products[existIndex].quantity -= 1;
         cart.products[existIndex].totalProductPrice -= product.price;
     }

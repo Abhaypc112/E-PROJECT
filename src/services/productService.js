@@ -9,6 +9,12 @@ const getAllProducts = async (skip, limit) => {
     return products;
 };
 
+const getAllProductsForAdmin = async () => {   
+    const products = await Product.find();
+    if(!products.length) new CustomError("Produts not found !",404);
+    return products;
+};
+
 const getProductById = async (productId) => {
     const product = await Product.findById(productId);
     if(!product) throw new CustomError("Produt not found !");
@@ -78,4 +84,5 @@ module.exports = {
     getTotalCountByCategory,
     getTotalCount,
     getAllHomeProduts,
+    getAllProductsForAdmin
 };

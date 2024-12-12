@@ -25,6 +25,14 @@ const allProducts = catchAsync( async (req,res)=>{
     },});
 });
 
+const allProductsForAdmin = catchAsync( async (req,res)=>{
+    const {category} = req.query;
+    let products;
+    if(category) products = await getProductsByCaregory(category);
+    else products = await getAllProducts();
+    res.status(200).json({status:"Success",data:products});
+})
+
 const getHomeProducts = catchAsync( async() => {
    const products = await getAllProducts(skip, limit);
     res.status(200).json({status:"Success",data :products })
@@ -69,4 +77,5 @@ module.exports = {
     deleteProduct,
     categorys,
     getHomeProducts,
+    allProductsForAdmin
 }
